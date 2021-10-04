@@ -1,8 +1,10 @@
 const QRCode = require('qrcode');
 const AWS = require('aws-sdk');
+require('dotenv').config();
+
 const s3 = new AWS.S3({
-  accessKeyId: 'AKIAT3ACD3U34USQ3AU5',
-  secretAccessKey: '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',
+  accessKeyId: process.env.AWS_ACCESS_ID,
+  secretAccessKey: process.env.AWS_SECRET_KEY,
 });
 exports.handler = async (event, context, callback) => {
   const qrOption = { width: 300, quality: 1 };
