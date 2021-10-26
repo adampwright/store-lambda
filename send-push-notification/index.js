@@ -7,33 +7,15 @@ const { QueryCommand } = require('@aws-sdk/client-dynamodb');
 const { ScanCommand } = require('@aws-sdk/client-dynamodb');
 const { ddbClient } = require('./libs/ddbClient.js');
 
-const sendPushNotification = async (deviceToken) => {
-  const options = {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${process.env.CLOUD_MESSAGING_SERVER_KEY}`,
-    },
-  };
+//firebase
+const { initializeApp } = require('firebase-admin/app');
+var admin = require('firebase-admin');
 
-  const body = {
-    notification: {
-      title: 'New Order Received!',
-      body: '',
-      image: '',
-    },
-    token: deviceToken,
-  };
+var serviceAccount = require('./firebase-credentials.json');
 
-  return axios
-    .post(`https://fcm.googleapis.com/v1/projects/wrightway-store/messages:send`, JSON.stringify(body), options)
-    .then((resp) => {
-      return resp.data;
-    })
-    .catch((error) => {
-      console.log(error);
-      // return sendRes(400, error);
-    });
-};
+initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
 
 //get list of stores to compare with sent order data
 const getStores = async () => {
@@ -80,18 +62,39 @@ const getDeviceTokensByStore = async (storeCode) => {
   }
 };
 
+const sendPushNotifications = async (deviceTokens, firstName, lastName) => {
+  const message = {
+    notification: {
+      title: 'New Order Received',
+      body: `You have a new order from ${firstName} ${lastName}`,
+    },
+  };
+
+  return admin
+    .messaging()
+    .sendToDevice(deviceTokens, message)
+    .then((response) => {
+      console.log('Sent successfully.\n');
+      console.log(response);
+      return response;
+    })
+    .catch((error) => {
+      console.log('Sent failed.\n');
+      console.log(error);
+      return error;
+    });
+};
+
 exports.handler = async (event) => {
   const stores = await getStores();
   const storeCode = stores.filter((item) => item.id == event.storeId)[0].code;
   const tokens = await getDeviceTokensByStore(storeCode);
-  tokens.forEach((item) => {
-    sendPushNotification(item);
-  });
+  const push = await sendPushNotifications(tokens, event.customerFirstName, event.customerLastName);
 
   // TODO implement
   const response = {
     statusCode: 200,
     body: JSON.stringify(event),
   };
-  return tokens;
+  return push;
 };

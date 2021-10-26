@@ -10,9 +10,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.38.0",
+    "@aws-sdk/util-dynamodb": "^3.38.0",
     "axios": "^0.24.0",
     "dotenv": "^10.0.0",
-    "@aws-sdk/client-dynamodb": "^3.38.0",
-    "@aws-sdk/util-dynamodb": "^3.38.0"
+    "firebase-admin": "^10.0.0"
   }
 }
