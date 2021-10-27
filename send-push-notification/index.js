@@ -77,8 +77,8 @@ const sendPushNotifications = async (event, deviceTokens) => {
           notificationCode: 'new-order',
           storeId: event.storeId,
           storeName: event.storeCode.replace('<br />', '/').replace('<br />', '/').split('/')[1],
-          firstName: event.firstName,
-          lastName: event.lastName,
+          firstName: event.customerFirstName,
+          lastName: event.customerLastName,
         },
       };
       break;
@@ -93,8 +93,8 @@ const sendPushNotifications = async (event, deviceTokens) => {
           notificationCode: 'customer-arrived',
           storeId: event.storeId,
           storeName: event.storeCode.replace('<br />', '/').replace('<br />', '/').split('/')[1],
-          firstName: event.firstName,
-          lastName: event.lastName,
+          firstName: event.customerFirstName,
+          lastName: event.customerLastName,
         },
       };
       break;
