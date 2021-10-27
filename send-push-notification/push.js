@@ -12,8 +12,8 @@ const registrationTokens = ['dRWo13u-RAyhT-inW31H8A:APA91bF4VTXMvtw9iNz2Yt7RMwbR
 const sendPushNotifications = async (deviceTokens) => {
   const message = {
     notification: {
-      title: 'My Title',
-      body: 'TEST',
+      title: 'New Order Received!',
+      body: '',
     },
   };
 

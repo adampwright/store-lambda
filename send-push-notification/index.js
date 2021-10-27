@@ -62,13 +62,43 @@ const getDeviceTokensByStore = async (storeCode) => {
   }
 };
 
-const sendPushNotifications = async (deviceTokens, firstName, lastName) => {
-  const message = {
-    notification: {
-      title: 'New Order Received',
-      body: `You have a new order from ${firstName} ${lastName}`,
-    },
-  };
+const sendPushNotifications = async (event, deviceTokens) => {
+  let message = {};
+
+  switch (event.notificationCode) {
+    case 'new-order':
+      message = {
+        notification: {
+          title: 'New Order Received!',
+          body: `You have a new order from ${event.firstName} ${event.lastName}`,
+        },
+        data: {
+          orderId: event.orderId,
+          notificationCode: 'new-order',
+          storeId: event.storeId,
+          storeName: event.storeCode.replace('<br />', '/').replace('<br />', '/').split('/')[1],
+          firstName: event.firstName,
+          lastName: event.lastName,
+        },
+      };
+      break;
+    case 'customer-arrived':
+      message = {
+        notification: {
+          title: 'Customer Has Arrived!',
+          body: `Your customer ${event.firstName} ${event.lastName} has arrived to pick up order #${event.orderId}`,
+        },
+        data: {
+          orderId: event.orderId,
+          notificationCode: 'customer-arrived',
+          storeId: event.storeId,
+          storeName: event.storeCode.replace('<br />', '/').replace('<br />', '/').split('/')[1],
+          firstName: event.firstName,
+          lastName: event.lastName,
+        },
+      };
+      break;
+  }
 
   return admin
     .messaging()
@@ -89,7 +119,8 @@ exports.handler = async (event) => {
   const stores = await getStores();
   const storeCode = stores.filter((item) => item.id == event.storeId)[0].code;
   const tokens = await getDeviceTokensByStore(storeCode);
-  const push = await sendPushNotifications(tokens, event.customerFirstName, event.customerLastName);
+
+  const push = await sendPushNotifications(event, tokens);
 
   // TODO implement
   const response = {
