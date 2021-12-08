@@ -46,7 +46,7 @@ const sendSMS = async (phone, event) => {
       .join('&');
 
   // authString = btoa(`${process.env.TWILIO_ACCOUNT_SID}:${process.env.TWILIO_AUTH_TOKEN}`);
-  authString = Buffer.from(`AC780d29af0c938b9f2a40542f86a24062:0762a405569c23c170ef257a289abe87`).toString('base64');
+  authString = Buffer.from(`${process.env.TWILIO_ACCOUNT_SID}:${process.env.TWILIO_AUTH_TOKEN}`).toString('base64');
 
   const options = {
     headers: {
