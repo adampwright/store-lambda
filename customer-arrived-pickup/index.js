@@ -1,14 +1,12 @@
 require('dotenv').config();
 const axios = require('axios');
 
-const changeOrderStatus = async (entityId) => {
+const changeOrderStatus = async (requestBody) => {
   const config = {
     method: 'post',
     url: `https://api.wrightwaystore.com/index.php/rest/V1/orders/`,
     headers: { Authorization: `Bearer ${process.env.BACKEND_JWT}` },
-    data: {
-        entity = { entity_id: entityId, state: 'processing', status: 'customer_arrived' }
-    },
+    data: requestBody,
   };
 
   try {
@@ -28,6 +26,6 @@ const sendRes = (status, body, filename) => {
 };
 
 exports.handler = async (event, context, callback) => {
-  const orders = await changeOrderStatus(event.entity_id);
+  const orders = await changeOrderStatus(event);
   return sendRes(200, orders);
 };
