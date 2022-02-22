@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "upload": "zip -r ./parse-cloudfront-image-dimensions.zip . && aws lambda update-function-code --function-name parse-cloudfront-image-dimensions --zip-file fileb://parse-cloudfront-image-dimensions.zip"
+    "upload": "zip -r ./parse-cloudfront-image-dimensions.zip . && aws lambda update-function-code --function-name parse-cloudfront-image-dimensions --zip-file fileb://parse-cloudfront-image-dimensions.zip --region us-east-1"
   },
   "keywords": [],
   "author": "",

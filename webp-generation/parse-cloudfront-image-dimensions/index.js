@@ -11,6 +11,7 @@ const variables = {
     { w: 200, h: 200 },
     { w: 300, h: 300 },
     { w: 400, h: 400 },
+    { w: 600, h: 600 },
   ],
   defaultDimension: { w: 200, h: 200 },
   variance: 20,

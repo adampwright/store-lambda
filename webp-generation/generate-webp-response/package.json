@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "upload": "zip -r ./generate-webp-response.zip . && aws lambda update-function-code --function-name generate-webp-response --zip-file fileb://generate-webp-response.zip"
+    "upload": "zip -r ./generate-webp-response.zip . && aws lambda update-function-code --function-name generate-webp-response --zip-file fileb://generate-webp-response.zip  --region us-east-1"
   },
   "keywords": [],
   "author": "",
