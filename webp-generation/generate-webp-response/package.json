@@ -1,0 +1,17 @@
+{
+  "name": "generate-webp-response",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "upload": "zip -r ./generate-webp-response.zip . && aws lambda update-function-code --function-name generate-webp-response --zip-file fileb://generate-webp-response.zip"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "http": "^0.0.1-security",
+    "https": "^1.0.0",
+    "querystring": "^0.2.1"
+  }
+}
